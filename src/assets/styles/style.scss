@@ -1,9 +1,10 @@
 @charset "UTF-8";
 
 // base
-@import 'base/base';
-@import 'base/fonts';
+@import "base/base";
+@import "base/fonts";
+@import "base/variables";
 
 // componenets
-@import 'components/app';
-@import 'components/board';
+@import "components/app";
+@import "components/game";
