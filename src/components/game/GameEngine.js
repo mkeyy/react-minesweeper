@@ -3,12 +3,14 @@ import React, { useState, useEffect } from "react";
 import Field from "./Field";
 import Mine from "../icons/Mine";
 import Flag from "../icons/Flag";
+import Modal from "../parts/Modal";
 
 function GameEngine() {
   const [board, setBoard] = useState(null);
   const [minesArr, setMinesArr] = useState(null);
-  const [mines, setMines] = useState(60);
+  const [mines, setMines] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [gameWin, setGameWin] = useState(false);
   let id = 0;
 
   function checkNeighbours(arr, i, j, func) {
@@ -26,7 +28,7 @@ function GameEngine() {
     }
   }
 
-  function handleGameStart(x = 16, y = 30) {
+  function handleGameStart(x = 16, y = 30, m = 10) {
     let i = 0;
     let j = 0;
     let mArr = [];
@@ -40,7 +42,9 @@ function GameEngine() {
           )
       );
 
-    for (let k = 0; k < mines; k++) {
+    setMines(m);
+
+    for (let k = 0; k < m; k++) {
       do {
         i = 0 + Math.floor(Math.random() * (x - 1));
         j = 0 + Math.floor(Math.random() * (y - 1));
@@ -52,6 +56,7 @@ function GameEngine() {
     }
 
     setGameOver(false);
+    setGameWin(false);
     setMinesArr(mArr);
     setBoard(arr);
   }
@@ -85,11 +90,15 @@ function GameEngine() {
       newArr[x][y].active = true;
       let mId = minesArr.findIndex(o => o.x === x && o.y === y);
       if (mId !== -1) minesArr.splice(mId, 1);
+
+      if (minesArr.length === 0 && mines - 1 === 0) setGameWin(true);
       setMines(mines - 1);
     } else {
       newArr[x][y].content = "";
       newArr[x][y].active = false;
       if (newArr[x][y].value === -1) minesArr.push({ x, y });
+
+      if (minesArr.length === 0 && mines + 1 === 0) setGameWin(true);
       setMines(mines + 1);
     }
 
@@ -97,7 +106,7 @@ function GameEngine() {
   }
 
   useEffect(() => {
-    handleGameStart(16, 30);
+    handleGameStart();
   }, []);
 
   if (board) {
@@ -107,8 +116,8 @@ function GameEngine() {
         <div
           className="rm-board"
           style={{
-            gridTemplateColumns: "repeat(" + board[0].length + ", 40px)",
-            gridTemplateRows: "repeat(" + board.length + ", 40px)"
+            gridTemplateColumns: "repeat(" + board[0].length + ", 44px)",
+            gridTemplateRows: "repeat(" + board.length + ", 44px)"
           }}
         >
           {board.map((row, i) =>
@@ -116,34 +125,22 @@ function GameEngine() {
               return (
                 <Field
                   key={id++}
-                  x={i}
-                  y={j}
                   data={{
                     active: field.active,
-                    content: field.content
+                    content: field.content,
+                    x: i,
+                    y: j
                   }}
-                  onClick={handleLeftClick}
-                  onContextMenu={handleRightClick}
+                  onLeftClick={handleLeftClick}
+                  onRightClick={handleRightClick}
                 />
               );
             })
           )}
         </div>
-        {gameOver && (
-          <div className="rm-modal">
-            <div className="rm-container">
-              <h2 className="rm-h2">Game Over</h2>
-              <div className="rm-buttons">
-                <button
-                  className="rm-btn rm-btn--primary"
-                  onClick={() => handleGameStart(16, 30)}
-                >
-                  Try again
-                </button>
-                <button className="rm-btn rm-btn--primary">Go to start</button>
-              </div>
-            </div>
-          </div>
+        {gameOver && <Modal title="Game Over!" restart={handleGameStart} />}
+        {gameWin && (
+          <Modal title="Congratulations!" restart={handleGameStart} />
         )}
       </div>
     );

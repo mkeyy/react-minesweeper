@@ -1,0 +1,17 @@
+.rm-btn {
+  font-size: 16px;
+  padding: 15px 30px;
+  margin: 0 10px;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.rm-btn--primary {
+  background-color: $board-color;
+  border: none;
+  color: $c-white;
+}

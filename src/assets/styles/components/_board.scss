@@ -1,0 +1,40 @@
+.rm-board {
+  display: grid;
+  background-color: rgba($board-color-active, 0.2);
+
+  .rm-field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $board-color;
+    border: none;
+    border-bottom: 1px solid rgba($primary-color, 0.1);
+    border-right: 1px solid rgba($primary-color, 0.1);
+    border-radius: 2px;
+    padding: 0;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .rm-field--active {
+    background-color: rgba($board-color-active, 0.5);
+  }
+
+  .ic-mine {
+    width: calc(100% - 22px);
+    height: calc(100% - 22px);
+    padding: 11.5px;
+    margin: 0 -1px -1px 0;
+    fill: $primary-color;
+    background-color: $c-danger;
+  }
+}
+
+.rm-board__mines {
+  font-size: 30px;
+  font-weight: 900;
+}

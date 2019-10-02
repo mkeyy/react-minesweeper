@@ -23,33 +23,3 @@
     }
   }
 }
-
-.rm-board {
-  display: grid;
-  border-top: 1px solid $primary-color;
-  border-left: 1px solid $primary-color;
-
-  .rm-field {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    outline: none;
-    border-bottom: 1px solid $primary-color;
-    border-right: 1px solid $primary-color;
-    cursor: pointer;
-    padding: 0;
-  }
-
-  .rm-field--active {
-    background-color: $secondary-color;
-  }
-
-  .ic-mine {
-    width: calc(100% - 20px);
-    height: calc(100% - 20px);
-    padding: 10px;
-    fill: $primary-color;
-    background-color: $c-danger;
-  }
-}
